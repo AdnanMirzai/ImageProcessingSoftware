@@ -1,4 +1,4 @@
-package se.kth.adnmax.lab4.imageprocessingsoftware.model;
+package se.kth.adnmax.lab4.imageprocessingsoftware.util;
 
 /**
  * Static methods for conversions between an int representing ARGB-values
