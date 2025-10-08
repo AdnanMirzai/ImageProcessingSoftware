@@ -1,4 +1,4 @@
-package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
+package se.kth.adnmax.lab4.imageprocessingsoftware.util;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
