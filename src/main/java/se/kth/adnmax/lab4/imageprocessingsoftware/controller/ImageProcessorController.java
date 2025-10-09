@@ -33,6 +33,22 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(invertedImage);
     }
 
+    @Override
+    public void onGreyScaleSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+
+        //goes throgh model
+        int[][] newPixels = model.greyScale(pixels);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+    }
+
     public void setInitialImage(Image image) {
         view.displayImage(image);
     }

@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
     private Button invertButton;
+    private Button greyScaleButton;
     private IviewListener viewListener;
 
     public ImageProcessorView() {
@@ -29,12 +30,20 @@ public class ImageProcessorView extends BorderPane {
         invertButton.setOnAction(e -> {
             if (viewListener != null) viewListener.onInvertSelected();
         });
-
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().add(invertButton);
-
         this.setCenter(centerBox);
+
+        greyScaleButton = new Button("GreyScale");
+        greyScaleButton.setOnAction(e -> {
+            if (viewListener != null) viewListener.onGreyScaleSelected();
+        });
+        HBox buttonBox2 = new HBox(10);
+        buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
+        buttonBox.getChildren().add(greyScaleButton);
+        this.setCenter(centerBox);
+        //this.setBottom(buttonBox2);
         this.setBottom(buttonBox);
     }
 
