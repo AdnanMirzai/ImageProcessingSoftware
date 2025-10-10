@@ -1,18 +1,21 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
     private Button invertButton;
     private Button greyScaleButton;
+    private MenuBar menuBar;
     private IviewListener viewListener;
 
     public ImageProcessorView() {
@@ -22,29 +25,36 @@ public class ImageProcessorView extends BorderPane {
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
 
+        createMenuBar();
+
         VBox centerBox = new VBox(10);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.getChildren().add(imageView);
-
-        invertButton = new Button("Invert");
-        invertButton.setOnAction(e -> {
-            if (viewListener != null) viewListener.onInvertSelected();
-        });
-        HBox buttonBox = new HBox(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().add(invertButton);
         this.setCenter(centerBox);
 
-        greyScaleButton = new Button("GreyScale");
-        greyScaleButton.setOnAction(e -> {
+    }
+
+    private void createMenuBar() {
+        Menu fileMenu = new Menu("File");
+        MenuItem exitItem = new MenuItem(("Exit"));
+        exitItem.setOnAction(e -> {
+            if(viewListener != null) viewListener.onMenubarExitSelected();
+        });
+        fileMenu.getItems().add(exitItem);
+
+        Menu processMenu = new Menu("Process");
+        MenuItem greyScaleItem = new MenuItem(("Grey Scale"));
+        greyScaleItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onGreyScaleSelected();
         });
-        HBox buttonBox2 = new HBox(10);
-        buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonBox.getChildren().add(greyScaleButton);
-        this.setCenter(centerBox);
-        //this.setBottom(buttonBox2);
-        this.setBottom(buttonBox);
+        MenuItem invertItem = new MenuItem(("Invert colors"));
+        invertItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onInvertSelected();
+        });
+        processMenu.getItems().add(greyScaleItem);
+        processMenu.getItems().add(invertItem);
+        menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu, processMenu);
     }
 
     public void displayImage(Image image) {
@@ -57,5 +67,9 @@ public class ImageProcessorView extends BorderPane {
 
     public Image getCurrentImage() {
         return imageView.getImage();
+    }
+
+    public MenuBar getMenuBar() {
+        return menuBar;
     }
 }
