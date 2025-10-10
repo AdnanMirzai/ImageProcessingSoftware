@@ -13,8 +13,6 @@ import javafx.scene.layout.VBox;
 
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
-    private Button invertButton;
-    private Button greyScaleButton;
     private MenuBar menuBar;
     private IviewListener viewListener;
 
