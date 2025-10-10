@@ -49,6 +49,8 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(newImage);
     }
 
+
+
     public void setInitialImage(Image image) {
         view.displayImage(image);
     }

@@ -1,8 +1,8 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
 public class ImageProcessorFacade {
-    private InvertColors invertProcessor;
-    private GreyScale greyScale;
+    private IPixelProcessor invertProcessor;
+    private IPixelProcessor greyScale;
 
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();
