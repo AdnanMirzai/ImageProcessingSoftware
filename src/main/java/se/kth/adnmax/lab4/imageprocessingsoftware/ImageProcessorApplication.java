@@ -2,7 +2,9 @@ package se.kth.adnmax.lab4.imageprocessingsoftware;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import se.kth.adnmax.lab4.imageprocessingsoftware.controller.ImageProcessorController;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
@@ -29,8 +31,8 @@ public class ImageProcessorApplication extends Application {
         Image originalImage = new Image(this.getClass().getResource("devil.png").toString());
         controller.setInitialImage(originalImage); //let controller talk to view!
 
-        Scene scene = new Scene(view, 1000, 1000);
-        stage.setTitle("Image Processing Software");
+        Scene scene = new Scene(view, 900, 600);
+        stage.setTitle("Image Processor");
         stage.setScene(scene);
         stage.show();
     }

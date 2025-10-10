@@ -1,49 +1,76 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
-    private Button invertButton;
-    private Button greyScaleButton;
+    private MenuBar menuBar;
+    private Region histogramPlaceholder;
     private IviewListener viewListener;
 
     public ImageProcessorView() {
 
+        // Meny
+        createMenuBar();
+        this.setTop(menuBar);
+
+        // Bildvy
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
+        VBox imageBox = new VBox(imageView);
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setPadding(new Insets(5));
 
-        VBox centerBox = new VBox(10);
-        centerBox.setAlignment(Pos.CENTER);
-        centerBox.getChildren().add(imageView);
+        // Histogram (Än så länge placeholder)
+        histogramPlaceholder = new Region();
+        histogramPlaceholder.setPrefSize(300, 500);
+        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");
 
-        invertButton = new Button("Invert");
-        invertButton.setOnAction(e -> {
-            if (viewListener != null) viewListener.onInvertSelected();
-        });
-        HBox buttonBox = new HBox(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().add(invertButton);
+        // Ruta för allt innehåll i mitten. Två rutor brevid varandra.
+        HBox centerBox = new HBox(10);
+        centerBox.setPadding(new Insets(10));
+        centerBox.getChildren().addAll(histogramPlaceholder, imageView);
+
+        // Lägger till i BorderPane
         this.setCenter(centerBox);
+    }
 
-        greyScaleButton = new Button("GreyScale");
-        greyScaleButton.setOnAction(e -> {
+    private void createMenuBar() {
+        Menu fileMenu = new Menu("File");
+        MenuItem exitItem = new MenuItem(("Exit"));
+        exitItem.setOnAction(e -> {
+            if(viewListener != null) viewListener.onMenubarExitSelected();
+        });
+        fileMenu.getItems().add(exitItem);
+
+        Menu processMenu = new Menu("Process");
+        MenuItem greyScaleItem = new MenuItem(("Grey Scale"));
+        greyScaleItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onGreyScaleSelected();
         });
-        HBox buttonBox2 = new HBox(10);
-        buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonBox.getChildren().add(greyScaleButton);
-        this.setCenter(centerBox);
-        //this.setBottom(buttonBox2);
-        this.setBottom(buttonBox);
+        MenuItem invertItem = new MenuItem(("Invert colors"));
+        invertItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onInvertSelected();
+        });
+        processMenu.getItems().add(greyScaleItem);
+        processMenu.getItems().add(invertItem);
+        menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu, processMenu);
     }
 
     public void displayImage(Image image) {
@@ -56,5 +83,9 @@ public class ImageProcessorView extends BorderPane {
 
     public Image getCurrentImage() {
         return imageView.getImage();
+    }
+
+    public MenuBar getMenuBar() {
+        return menuBar;
     }
 }

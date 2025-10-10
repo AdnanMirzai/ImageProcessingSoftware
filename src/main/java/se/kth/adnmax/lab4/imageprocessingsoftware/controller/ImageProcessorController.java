@@ -1,5 +1,6 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 
+import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
@@ -49,6 +50,10 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(newImage);
     }
 
+    @Override
+    public void onMenubarExitSelected() {
+            System.exit(0); // save data?
+    }
 
 
     public void setInitialImage(Image image) {
