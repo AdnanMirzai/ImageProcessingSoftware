@@ -30,11 +30,9 @@ public class ImageProcessorApplication extends Application {
         //loading manually for now, will implement file chooser later
         Image originalImage = new Image(this.getClass().getResource("devil.png").toString());
         controller.setInitialImage(originalImage); //let controller talk to view!
-        MenuBar menuBar = view.getMenuBar();
-        VBox root = new VBox(menuBar, view);
 
-        Scene scene = new Scene(root, 400, 400);
-        stage.setTitle("Image Processing Software");
+        Scene scene = new Scene(view, 900, 600);
+        stage.setTitle("Image Processor");
         stage.setScene(scene);
         stage.show();
     }

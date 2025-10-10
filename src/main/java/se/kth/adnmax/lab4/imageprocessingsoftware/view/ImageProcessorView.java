@@ -1,5 +1,6 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -9,27 +10,43 @@ import javafx.scene.image.ImageView;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
     private MenuBar menuBar;
+    private Region histogramPlaceholder;
     private IviewListener viewListener;
 
     public ImageProcessorView() {
 
+        // Meny
+        createMenuBar();
+        this.setTop(menuBar);
+
+        // Bildvy
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
+        VBox imageBox = new VBox(imageView);
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setPadding(new Insets(5));
 
-        createMenuBar();
+        // Histogram (Än så länge placeholder)
+        histogramPlaceholder = new Region();
+        histogramPlaceholder.setPrefSize(300, 500);
+        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");
 
-        VBox centerBox = new VBox(10);
-        centerBox.setAlignment(Pos.CENTER);
-        centerBox.getChildren().add(imageView);
+        // Ruta för allt innehåll i mitten. Två rutor brevid varandra.
+        HBox centerBox = new HBox(10);
+        centerBox.setPadding(new Insets(10));
+        centerBox.getChildren().addAll(histogramPlaceholder, imageView);
+
+        // Lägger till i BorderPane
         this.setCenter(centerBox);
-
     }
 
     private void createMenuBar() {
