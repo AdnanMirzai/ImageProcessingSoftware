@@ -55,6 +55,7 @@ public class ImageProcessorController implements IviewListener {
             System.exit(0); // save data?
     }
 
+
     public void setInitialImage(Image image) {
         view.displayImage(image);
     }
