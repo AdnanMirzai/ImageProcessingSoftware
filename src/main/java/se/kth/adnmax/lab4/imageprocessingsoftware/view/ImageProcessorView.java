@@ -1,5 +1,7 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
@@ -14,6 +16,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
@@ -21,7 +26,14 @@ public class ImageProcessorView extends BorderPane {
     private Region histogramPlaceholder;
     private IviewListener viewListener;
 
+    private FileChooser fileChooser;
+    private Image image = null;
+
     public ImageProcessorView() {
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
+                "Image files", "*.png", ".jpg", "*.bmp");
+        fileChooser.getExtensionFilters().add(filter);
 
         // Meny
         createMenuBar();
@@ -52,10 +64,14 @@ public class ImageProcessorView extends BorderPane {
 
     private void createMenuBar() {
         Menu fileMenu = new Menu("File");
+        MenuItem loadImageItem = new MenuItem("Open...");
+        MenuItem saveImageItem = new MenuItem("Save");
         MenuItem exitItem = new MenuItem(("Exit"));
         exitItem.setOnAction(e -> {
-            if(viewListener != null) viewListener.onMenubarExitSelected();
-        });
+            onMenubarExitSelected();
+                });
+        fileMenu.getItems().add(loadImageItem);
+        fileMenu.getItems().add(saveImageItem);
         fileMenu.getItems().add(exitItem);
 
         Menu processMenu = new Menu("Process");
@@ -95,7 +111,17 @@ public class ImageProcessorView extends BorderPane {
         return imageView.getImage();
     }
 
-    public MenuBar getMenuBar() {
-        return menuBar;
+/*    protected void onOpensImageFile() {
+        File imageFile = fileChooser.showOpenDialog(primaryStage);
+        image = new Image(imageFile.toURI().toString());
+        // ...
+    }*/
+
+    public void onMenubarExitSelected() {
+        System.exit(0); // Check if user has saved file?
     }
+
+
+
+
 }

@@ -6,6 +6,8 @@ import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.IviewListener;
 
+import java.io.File;
+
 public class ImageProcessorController implements IviewListener {
 
     private ImageProcessorView view;
@@ -81,10 +83,9 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(newImage);
     }
 
-    @Override
-    public void onMenubarExitSelected() {
-            System.exit(0); // save data?
-    }
+
+
+
 
 
     public void setInitialImage(Image image) {
