@@ -117,7 +117,7 @@ public class ImageProcessorView extends BorderPane {
         // ...
     }*/
 
-    public void onMenubarExitSelected() {
+    private void onMenubarExitSelected() {
         System.exit(0); // Check if user has saved file?
     }
 
