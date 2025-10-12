@@ -67,8 +67,13 @@ public class ImageProcessorView extends BorderPane {
         invertItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onInvertSelected();
         });
+        MenuItem blurItem = new MenuItem(("Blur"));
+        blurItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onBlurSelected();
+        });
         processMenu.getItems().add(greyScaleItem);
         processMenu.getItems().add(invertItem);
+        processMenu.getItems().add(blurItem);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }

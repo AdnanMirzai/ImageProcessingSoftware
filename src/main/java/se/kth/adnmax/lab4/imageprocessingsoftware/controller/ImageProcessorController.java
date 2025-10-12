@@ -51,6 +51,22 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
+    public void onBlurSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+
+        //goes throgh model
+        int[][] newPixels = model.processBlur(pixels);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+    }
+
+    @Override
     public void onMenubarExitSelected() {
             System.exit(0); // save data?
     }
