@@ -4,26 +4,22 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 
 public class ImageProcessorView extends BorderPane {
-    private ImageView imageView;
+    private HistogramView histogramView;
     private MenuBar menuBar;
-    private Region histogramPlaceholder;
+    //private Region histogramView;
+    private ImageView imageView;
+    private VBox analysisBox;
     private IviewListener viewListener;
 
     private FileChooser fileChooser;
@@ -45,20 +41,44 @@ public class ImageProcessorView extends BorderPane {
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
         VBox imageBox = new VBox(imageView);
-        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setAlignment(Pos.TOP_LEFT);
         imageBox.setPadding(new Insets(5));
+        VBox.setVgrow(imageView, Priority.NEVER);
+        imageView.fitWidthProperty().bind(imageBox.widthProperty());
 
         // Histogram (Än så länge placeholder)
-        histogramPlaceholder = new Region();
+/*        histogramPlaceholder = new Region();
         histogramPlaceholder.setPrefSize(300, 500);
-        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");
+        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");*/
 
+        // Ruta för allt till vänster med histogram och sliders
+        histogramView = new HistogramView();
+        histogramView.setPrefHeight(400);
+        Slider windowSlider = new Slider(0, 255, 10);
+        Slider levelSlider = new Slider(0, 255, 10);
+        windowSlider.setShowTickMarks(true);
+        windowSlider.setShowTickLabels(true);
+
+        HBox sliderBox = new HBox(5, windowSlider, levelSlider);
+        sliderBox.setPadding(new Insets(10));
+        HBox.setHgrow(windowSlider, Priority.ALWAYS);
+        HBox.setHgrow(levelSlider, Priority.ALWAYS);
+        windowSlider.setMaxWidth(Double.MAX_VALUE);
+        levelSlider.setMaxWidth(Double.MAX_VALUE);
+
+        VBox analysisBox = new VBox(10, histogramView, sliderBox);
+        analysisBox.setPadding(new Insets(10));
+        analysisBox.setPrefSize(370, 500);
+        analysisBox.setMinSize(370, 500);
+        analysisBox.setMaxSize(370, 500);
         // Ruta för allt innehåll i mitten. Två rutor brevid varandra.
         HBox centerBox = new HBox(10);
         centerBox.setPadding(new Insets(10));
-        centerBox.getChildren().addAll(histogramPlaceholder, imageView);
+        centerBox.getChildren().addAll(imageBox);
+
 
         // Lägger till i BorderPane
+        this.setLeft(analysisBox);
         this.setCenter(centerBox);
     }
 
