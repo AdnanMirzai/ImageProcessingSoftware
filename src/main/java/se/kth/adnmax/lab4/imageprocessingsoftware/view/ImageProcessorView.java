@@ -35,7 +35,7 @@ public class ImageProcessorView extends BorderPane {
         createMenuBar();
         this.setTop(menuBar);
 
-        // Bildvy
+        // Bildvy (Imagebox)
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(600);
@@ -46,40 +46,32 @@ public class ImageProcessorView extends BorderPane {
         VBox.setVgrow(imageView, Priority.NEVER);
         imageView.fitWidthProperty().bind(imageBox.widthProperty());
 
-        // Histogram (Än så länge placeholder)
-/*        histogramPlaceholder = new Region();
-        histogramPlaceholder.setPrefSize(300, 500);
-        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");*/
-
-        // Ruta för allt till vänster med histogram och sliders
+        // Grafvy (AnalysisBox)
         histogramView = new HistogramView();
         histogramView.setPrefHeight(400);
-        Slider windowSlider = new Slider(0, 255, 10);
-        Slider levelSlider = new Slider(0, 255, 10);
+        Slider windowSlider = new Slider(0, 255, 0);
+        Slider levelSlider = new Slider(0, 255, 0);
+        Label windowLabel = new Label("Window");
+        Label levelLabel = new Label("Level");
+        VBox windowPane = new VBox(5, windowSlider, windowLabel);
+        VBox levelPane  = new VBox(5, levelSlider, levelLabel);
         windowSlider.setShowTickMarks(true);
         windowSlider.setShowTickLabels(true);
-
-        HBox sliderBox = new HBox(5, windowSlider, levelSlider);
+        levelSlider.setShowTickMarks(true);
+        levelSlider.setShowTickLabels(true);
+        HBox sliderBox = new HBox(10, windowPane, levelPane);
         sliderBox.setPadding(new Insets(10));
-        HBox.setHgrow(windowSlider, Priority.ALWAYS);
-        HBox.setHgrow(levelSlider, Priority.ALWAYS);
-        windowSlider.setMaxWidth(Double.MAX_VALUE);
-        levelSlider.setMaxWidth(Double.MAX_VALUE);
-
+        windowSlider.setPrefWidth(200);
+        levelSlider.setPrefWidth(200);
         VBox analysisBox = new VBox(10, histogramView, sliderBox);
         analysisBox.setPadding(new Insets(10));
         analysisBox.setPrefSize(370, 500);
         analysisBox.setMinSize(370, 500);
         analysisBox.setMaxSize(370, 500);
-        // Ruta för allt innehåll i mitten. Två rutor brevid varandra.
-        HBox centerBox = new HBox(10);
-        centerBox.setPadding(new Insets(10));
-        centerBox.getChildren().addAll(imageBox);
-
 
         // Lägger till i BorderPane
         this.setLeft(analysisBox);
-        this.setCenter(centerBox);
+        this.setCenter(imageBox);
     }
 
     private void createMenuBar() {
