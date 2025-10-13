@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
+import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
 
 import java.io.File;
 
@@ -123,17 +125,33 @@ public class ImageProcessorView extends BorderPane {
         return imageView.getImage();
     }
 
-/*    protected void onOpensImageFile() {
-        File imageFile = fileChooser.showOpenDialog(primaryStage);
-        image = new Image(imageFile.toURI().toString());
-        // ...
-    }*/
-
     private void onMenubarExitSelected() {
         System.exit(0); // Check if user has saved file?
     }
 
+    public void updateHistogram() {
+        Image currentImage = getCurrentImage();
+        if (currentImage == null) {
+            histogramView.clear();
+            return; // inga pixlar att räkna
+        }
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+        int width = pixels.length;
+        int height = pixels[0].length;
+        int[][] histogramValues;
+        histogramValues = new int[256][3];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = pixels[x][y];
+                int r = getRed(pixel);
+                int g = getGreen(pixel);
+                int b = getBlue(pixel);
 
-
-
-}
+                histogramValues[r][0]++;
+                histogramValues[g][1]++;
+                histogramValues[b][2]++;
+                }
+            }
+        histogramView.updateView(histogramValues);
+        }
+    }
