@@ -5,4 +5,5 @@ public interface IviewListener {
     void onGreyScaleSelected();
     void onBlurSelected();
     void onSharpenSelected();
+    void onWindowLevelSelected();
 }

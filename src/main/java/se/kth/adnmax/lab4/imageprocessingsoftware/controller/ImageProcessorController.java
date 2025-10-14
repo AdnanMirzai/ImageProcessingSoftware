@@ -52,6 +52,25 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
+    public void onWindowLevelSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+        double window = view.getWindow();
+        double level = view.getLevel();
+
+        //goes throgh model
+        int[][] newPixels = model.processWindowLevel(pixels, window, level);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+        view.updateHistogram();
+    }
+
+    @Override
     public void onBlurSelected() {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;

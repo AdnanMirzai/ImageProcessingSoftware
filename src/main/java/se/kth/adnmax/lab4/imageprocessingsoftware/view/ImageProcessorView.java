@@ -23,6 +23,8 @@ public class ImageProcessorView extends BorderPane {
     private ImageView imageView;
     private VBox analysisBox;
     private IviewListener viewListener;
+    private Slider levelSlider;
+    private Slider windowSlider;
 
     private FileChooser fileChooser;
     private Image image = null;
@@ -51,8 +53,8 @@ public class ImageProcessorView extends BorderPane {
         // Grafvy (AnalysisBox)
         histogramView = new HistogramView();
         histogramView.setPrefHeight(400);
-        Slider windowSlider = new Slider(0, 255, 0);
-        Slider levelSlider = new Slider(0, 255, 0);
+        windowSlider = new Slider(0, 255, 0);
+        levelSlider = new Slider(0, 255, 0);
         Label windowLabel = new Label("Window");
         Label levelLabel = new Label("Level");
         VBox windowPane = new VBox(5, windowSlider, windowLabel);
@@ -93,6 +95,10 @@ public class ImageProcessorView extends BorderPane {
         greyScaleItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onGreyScaleSelected();
         });
+        MenuItem windowLevelItem = new MenuItem(("Window/Level"));
+        windowLevelItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onWindowLevelSelected();
+        });
         MenuItem invertItem = new MenuItem(("Invert colors"));
         invertItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onInvertSelected();
@@ -106,6 +112,7 @@ public class ImageProcessorView extends BorderPane {
             if (viewListener != null) viewListener.onSharpenSelected();
         });
         processMenu.getItems().add(greyScaleItem);
+        processMenu.getItems().add(windowLevelItem);
         processMenu.getItems().add(invertItem);
         processMenu.getItems().add(blurItem);
         processMenu.getItems().add(sharpenItem);
@@ -123,6 +130,14 @@ public class ImageProcessorView extends BorderPane {
 
     public Image getCurrentImage() {
         return imageView.getImage();
+    }
+
+    public double getWindow() {
+        return windowSlider.getValue();
+    }
+
+    public double getLevel() {
+        return levelSlider.getValue();
     }
 
     private void onMenubarExitSelected() {

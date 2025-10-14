@@ -3,6 +3,7 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 public class ImageProcessorFacade {
     private IPixelProcessor invertProcessor;
     private IPixelProcessor greyScale;
+    private IPixelProcessor windowLevel;
     private IPixelProcessor blur;
     private IPixelProcessor sharpen;
 
@@ -19,6 +20,11 @@ public class ImageProcessorFacade {
 
     public int[][] greyScale(int[][] pixels) {
         return greyScale.process(pixels);
+    }
+
+    public int[][] processWindowLevel(int[][] pixels, double window, double level) {
+        WindowLevel windowLevel = new WindowLevel(window, level);
+        return windowLevel.process(pixels);
     }
 
     public int[][] processBlur(int[][] pixels) {
