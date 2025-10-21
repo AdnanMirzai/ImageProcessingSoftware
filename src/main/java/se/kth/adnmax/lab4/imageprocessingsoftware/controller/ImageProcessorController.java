@@ -40,11 +40,11 @@ public class ImageProcessorController implements IviewListener {
 
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
 
-        int[][] invertedPixels = model.processInvert(pixels);
+        int[][] newPixels = model.processInvert(pixels);
 
-        Image invertedImage = ImagePixelsConverter.pixelsToImage(invertedPixels);
-        view.displayImage(invertedImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+        int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
     }
 
@@ -60,7 +60,7 @@ public class ImageProcessorController implements IviewListener {
         int[][] newPixels = model.greyScale(pixels);
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
+        int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
     }
 
@@ -78,7 +78,7 @@ public class ImageProcessorController implements IviewListener {
         int[][] newPixels = model.processWindowLevel(pixels, window, level);
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
+        int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
     }
 
@@ -94,7 +94,7 @@ public class ImageProcessorController implements IviewListener {
         int[][] newPixels = model.processBlur(pixels);
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
+        int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
     }
 
@@ -110,7 +110,7 @@ public class ImageProcessorController implements IviewListener {
         int[][] newPixels = model.processSharpen(pixels);
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
+        int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
     }
 
