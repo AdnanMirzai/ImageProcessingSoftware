@@ -1,20 +1,15 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
-
-import java.io.File;
 
 public class ImageProcessorView extends BorderPane {
     private HistogramView histogramView;

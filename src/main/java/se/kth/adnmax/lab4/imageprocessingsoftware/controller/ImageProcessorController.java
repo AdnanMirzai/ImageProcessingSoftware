@@ -6,12 +6,10 @@ import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.IviewListener;
 
-import java.io.File;
-
 public class ImageProcessorController implements IviewListener {
 
-    private ImageProcessorView view;
-    private ImageProcessorFacade model;
+    private final ImageProcessorView view;
+    private final ImageProcessorFacade model;
 
     public ImageProcessorController(ImageProcessorView view, ImageProcessorFacade model) {
         this.view = view;
@@ -24,13 +22,9 @@ public class ImageProcessorController implements IviewListener {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] invertedPixels = model.processInvert(pixels);
 
-        //convert back, update view
         Image invertedImage = ImagePixelsConverter.pixelsToImage(invertedPixels);
         view.displayImage(invertedImage);
     }
@@ -40,13 +34,9 @@ public class ImageProcessorController implements IviewListener {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.greyScale(pixels);
 
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
     }
@@ -56,15 +46,12 @@ public class ImageProcessorController implements IviewListener {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
         double window = view.getWindow();
         double level = view.getLevel();
 
-        //goes throgh model
         int[][] newPixels = model.processWindowLevel(pixels, window, level);
 
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         view.updateHistogram();
@@ -75,13 +62,9 @@ public class ImageProcessorController implements IviewListener {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.processBlur(pixels);
 
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
     }
@@ -91,21 +74,12 @@ public class ImageProcessorController implements IviewListener {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.processSharpen(pixels);
 
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
     }
-
-
-
-
-
 
     public void setInitialImage(Image image) {
         view.displayImage(image);

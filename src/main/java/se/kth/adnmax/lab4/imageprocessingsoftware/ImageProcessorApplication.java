@@ -2,14 +2,11 @@ package se.kth.adnmax.lab4.imageprocessingsoftware;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import se.kth.adnmax.lab4.imageprocessingsoftware.controller.ImageProcessorController;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
-
 
 import java.io.IOException;
 
@@ -28,9 +25,8 @@ public class ImageProcessorApplication extends Application {
         ImageProcessorController controller = new ImageProcessorController(view, model);
 
         //loading manually for now, will implement file chooser later
-//        Image originalImage = new Image(this.getClass().getResource("devil.png").toString());
         Image originalImage = new Image(this.getClass().getResource("skull_ct.png").toString());
-        controller.setInitialImage(originalImage); //let controller talk to view!
+        controller.setInitialImage(originalImage);
 
         view.updateHistogram();
         Scene scene = new Scene(view, 1050, 560);
