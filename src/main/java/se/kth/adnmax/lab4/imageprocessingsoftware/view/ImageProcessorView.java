@@ -30,10 +30,6 @@ public class ImageProcessorView extends BorderPane {
     private Image image = null;
 
     public ImageProcessorView() {
-        fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Image files", "*.png", ".jpg", "*.bmp");
-        fileChooser.getExtensionFilters().add(filter);
 
         // Meny
         createMenuBar();
@@ -42,6 +38,7 @@ public class ImageProcessorView extends BorderPane {
         // Bildvy (Imagebox)
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
         VBox imageBox = new VBox(imageView);
@@ -81,6 +78,9 @@ public class ImageProcessorView extends BorderPane {
     private void createMenuBar() {
         Menu fileMenu = new Menu("File");
         MenuItem loadImageItem = new MenuItem("Open...");
+        loadImageItem.setOnAction(e-> {
+            viewListener.onLoadImageSelected();
+        });
         MenuItem saveImageItem = new MenuItem("Save");
         MenuItem exitItem = new MenuItem(("Exit"));
         exitItem.setOnAction(e -> {
@@ -122,6 +122,7 @@ public class ImageProcessorView extends BorderPane {
 
     public void displayImage(Image image) {
         imageView.setImage(image);
+
     }
 
     public void setViewListener(IviewListener viewListener) {

@@ -25,12 +25,12 @@ public class ImageProcessorApplication extends Application {
 
         ImageProcessorFacade model = new ImageProcessorFacade();
         ImageProcessorView view = new ImageProcessorView();
-        ImageProcessorController controller = new ImageProcessorController(view, model);
+        ImageProcessorController controller = new ImageProcessorController(stage, view, model);
 
         //loading manually for now, will implement file chooser later
 //        Image originalImage = new Image(this.getClass().getResource("devil.png").toString());
-        Image originalImage = new Image(this.getClass().getResource("skull_ct.png").toString());
-        controller.setInitialImage(originalImage); //let controller talk to view!
+//        Image originalImage = new Image(this.getClass().getResource("skull_ct.png").toString());
+//        controller.setInitialImage(originalImage); //let controller talk to view!
 
         view.updateHistogram();
         Scene scene = new Scene(view, 1050, 560);

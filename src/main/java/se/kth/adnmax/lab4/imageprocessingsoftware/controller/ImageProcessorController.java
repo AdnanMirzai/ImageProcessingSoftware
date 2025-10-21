@@ -1,6 +1,8 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
@@ -10,13 +12,21 @@ import java.io.File;
 
 public class ImageProcessorController implements IviewListener {
 
+    private Stage stage;
     private ImageProcessorView view;
     private ImageProcessorFacade model;
+    private FileChooser fileChooser;
 
-    public ImageProcessorController(ImageProcessorView view, ImageProcessorFacade model) {
+    public ImageProcessorController(Stage stage, ImageProcessorView view, ImageProcessorFacade model) {
+        this.stage = stage;
         this.view = view;
         this.model = model;
         view.setViewListener(this);
+
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
+                "Image files", "*.png", ".jpg", "*.bmp");
+        fileChooser.getExtensionFilters().add(filter);
     }
 
     @Override
@@ -102,10 +112,21 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(newImage);
     }
 
+    @Override
+    public void onLoadImageSelected() {
+        File file = fileChooser.showOpenDialog(stage);
 
+        // now, load the image
+        if(file != null) {
+            Image image = new Image(file.toURI().toString());
+            view.displayImage(image);
 
-
-
+            // exception handling needed?
+        }
+        else {
+            // show an Alert
+        }
+    }
 
     public void setInitialImage(Image image) {
         view.displayImage(image);
