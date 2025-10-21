@@ -58,6 +58,16 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
+    public void onResetSelected() {
+        int[][] original = model.getOriginal();
+        if(original == null) return;
+
+        Image originalImage = ImagePixelsConverter.pixelsToImage(original);
+        view.displayImage(originalImage);
+        view.updateHistogram();
+    }
+
+    @Override
     public void onBlurSelected() {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) return;
@@ -82,6 +92,8 @@ public class ImageProcessorController implements IviewListener {
     }
 
     public void setInitialImage(Image image) {
+        int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+        model.saveOriginal(pixels);
         view.displayImage(image);
     }
 }
