@@ -82,6 +82,8 @@ public class ImageProcessorController implements IviewListener {
     }
 
     public void setInitialImage(Image image) {
+        int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+        model.saveOriginal(pixels);
         view.displayImage(image);
     }
 }

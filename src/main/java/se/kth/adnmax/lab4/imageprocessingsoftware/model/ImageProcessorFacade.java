@@ -1,11 +1,21 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
 public class ImageProcessorFacade {
+    private int[][] originalMatix;
+
     private IPixelProcessor invertProcessor;
     private IPixelProcessor greyScale;
     private IPixelProcessor windowLevel;
     private IPixelProcessor blur;
     private IPixelProcessor sharpen;
+
+    public void saveOriginal(int [][] matix) {
+        this.originalMatix = matix;
+    }
+
+    public int[][] getOriginal() {
+        return deepCopy(originalMatix);
+    }
 
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();
@@ -33,5 +43,16 @@ public class ImageProcessorFacade {
 
     public int[][] processSharpen(int[][]pixels) {
         return sharpen.process(pixels);
+    }
+
+    private int[][] deepCopy(int[][] original) {
+        if(original==null) return null;
+        int h = original.length;
+        int w = original[0].length;
+        int[][] copy = new int[h][w];
+        for(int i=0; i<h; i++) {
+            System.arraycopy(original[i], 0, copy[i], 0,w);
+        }
+        return copy;
     }
 }
