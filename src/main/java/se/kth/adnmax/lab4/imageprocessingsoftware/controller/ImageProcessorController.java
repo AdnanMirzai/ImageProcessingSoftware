@@ -13,10 +13,10 @@ import java.io.File;
 
 public class ImageProcessorController implements IviewListener {
 
-    private Stage stage;
-    private ImageProcessorView view;
-    private ImageProcessorFacade model;
-    private FileChooser fileChooser;
+    private final Stage stage;
+    private final ImageProcessorView view;
+    private final ImageProcessorFacade model;
+    private final FileChooser fileChooser;
 
     public ImageProcessorController(Stage stage, ImageProcessorView view, ImageProcessorFacade model) {
         this.stage = stage;
@@ -38,13 +38,10 @@ public class ImageProcessorController implements IviewListener {
             return;
         }
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
 
-        //goes throgh model
         int[][] invertedPixels = model.processInvert(pixels);
 
-        //convert back, update view
         Image invertedImage = ImagePixelsConverter.pixelsToImage(invertedPixels);
         view.displayImage(invertedImage);
         int[][] histogramValues = model.calculateHistogram(pixels);
@@ -59,13 +56,8 @@ public class ImageProcessorController implements IviewListener {
             return;
         }
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.greyScale(pixels);
-
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(pixels);
@@ -80,15 +72,10 @@ public class ImageProcessorController implements IviewListener {
             return;
         }
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
         double window = view.getWindow();
         double level = view.getLevel();
-
-        //goes throgh model
         int[][] newPixels = model.processWindowLevel(pixels, window, level);
-
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(pixels);
@@ -103,13 +90,8 @@ public class ImageProcessorController implements IviewListener {
             return;
         }
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.processBlur(pixels);
-
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(pixels);
@@ -124,13 +106,8 @@ public class ImageProcessorController implements IviewListener {
             return;
         }
 
-        //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
-        //goes throgh model
         int[][] newPixels = model.processSharpen(pixels);
-
-        //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(pixels);
@@ -146,6 +123,7 @@ public class ImageProcessorController implements IviewListener {
             view.displayImage(image);
             //Update histogram
             int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+            model.saveOriginal(pixels);
             int[][] histogramValues = model.calculateHistogram(pixels);
             view.updateHistogram(histogramValues);
         }
@@ -166,7 +144,21 @@ public class ImageProcessorController implements IviewListener {
         view.updateHistogram(histogramValues);
     }
 
+    @Override
+    public void onResetSelected() {
+        int[][] original = model.getOriginal();
+        if(original == null) return;
+
+        Image originalImage = ImagePixelsConverter.pixelsToImage(original);
+        view.displayImage(originalImage);
+        int[][] histogramValues = model.calculateHistogram(original);
+        view.updateHistogram(histogramValues);
+    }
+
+
     public void setInitialImage(Image image) {
+        int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+        model.saveOriginal(pixels);
         view.displayImage(image);
     }
 }

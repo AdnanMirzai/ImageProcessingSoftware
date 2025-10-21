@@ -105,7 +105,11 @@ public class ImageProcessorView extends BorderPane {
         sharpenItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onSharpenSelected();
         });
-        processMenu.getItems().addAll(greyScaleItem, windowLevelItem, invertItem, blurItem, sharpenItem);
+        MenuItem resetItem = new MenuItem(("Reset"));
+        resetItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onResetSelected();
+        });
+        processMenu.getItems().addAll(greyScaleItem, windowLevelItem, invertItem, blurItem, sharpenItem, resetItem);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }
