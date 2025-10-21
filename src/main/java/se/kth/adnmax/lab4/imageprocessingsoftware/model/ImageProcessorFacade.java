@@ -6,6 +6,7 @@ public class ImageProcessorFacade {
     private IPixelProcessor windowLevel;
     private IPixelProcessor blur;
     private IPixelProcessor sharpen;
+    private histogramCalculator histogramCalc;
 
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();
@@ -33,5 +34,9 @@ public class ImageProcessorFacade {
 
     public int[][] processSharpen(int[][]pixels) {
         return sharpen.process(pixels);
+    }
+
+    public int[][] calculateHistogram(int[][] pixels) {
+        return histogramCalc.calculateHistogram(pixels);
     }
 }

@@ -3,6 +3,7 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import se.kth.adnmax.lab4.imageprocessingsoftware.model.FileIO;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
@@ -43,6 +44,8 @@ public class ImageProcessorController implements IviewListener {
         //convert back, update view
         Image invertedImage = ImagePixelsConverter.pixelsToImage(invertedPixels);
         view.displayImage(invertedImage);
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     @Override
@@ -59,6 +62,8 @@ public class ImageProcessorController implements IviewListener {
         //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     @Override
@@ -77,7 +82,8 @@ public class ImageProcessorController implements IviewListener {
         //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
-        view.updateHistogram();
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     @Override
@@ -94,6 +100,8 @@ public class ImageProcessorController implements IviewListener {
         //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     @Override
@@ -110,6 +118,8 @@ public class ImageProcessorController implements IviewListener {
         //convert back, update view
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     @Override
@@ -118,14 +128,28 @@ public class ImageProcessorController implements IviewListener {
 
         // now, load the image
         if(file != null) {
-            Image image = new Image(file.toURI().toString());
+            Image image = FileIO.readImage(file);
             view.displayImage(image);
-
-            // exception handling needed?
+            //Update histogram
+            int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+            int[][] histogramValues = model.calculateHistogram(pixels);
+            view.updateHistogram(histogramValues);
         }
         else {
-            // show an Alert
+            view.showAlert("No file selected");
         }
+    }
+
+    public void onHistogramUpdate() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) {
+            view.clearHistogram();
+            return;
+        }
+
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+        int[][] histogramValues = model.calculateHistogram(pixels);
+        view.updateHistogram(histogramValues);
     }
 
     public void setInitialImage(Image image) {

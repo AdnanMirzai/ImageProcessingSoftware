@@ -1,33 +1,26 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
 
-import java.io.File;
-
 public class ImageProcessorView extends BorderPane {
     private HistogramView histogramView;
     private MenuBar menuBar;
-    //private Region histogramView;
     private ImageView imageView;
-    private VBox analysisBox;
     private IviewListener viewListener;
     private Slider levelSlider;
     private Slider windowSlider;
 
     private FileChooser fileChooser;
-    private Image image = null;
+
+    private final Alert alert = new Alert(Alert.AlertType.WARNING);
 
     public ImageProcessorView() {
 
@@ -145,29 +138,20 @@ public class ImageProcessorView extends BorderPane {
         System.exit(0); // Check if user has saved file?
     }
 
-    public void updateHistogram() {
-        Image currentImage = getCurrentImage();
-        if (currentImage == null) {
-            histogramView.clear();
-            return; // inga pixlar att räkna
-        }
-        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-        int width = pixels.length;
-        int height = pixels[0].length;
-        int[][] histogramValues;
-        histogramValues = new int[256][3];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixels[x][y];
-                int r = getRed(pixel);
-                int g = getGreen(pixel);
-                int b = getBlue(pixel);
-
-                histogramValues[r][0]++;
-                histogramValues[g][1]++;
-                histogramValues[b][2]++;
-                }
-            }
-        histogramView.updateView(histogramValues);
-        }
+    public void showAlert(String message) {
+        alert.setWidth(200);
+        alert.setHeight(300);
+        alert.setTitle("Information");
+        alert.setHeaderText("Warning");
+        alert.setContentText(message);
+        alert.show();
     }
+
+    public void clearHistogram() {
+        histogramView.clear();
+    }
+
+    public void updateHistogram(int[][] histogramValues) {
+        histogramView.updateView(histogramValues);
+    }
+}

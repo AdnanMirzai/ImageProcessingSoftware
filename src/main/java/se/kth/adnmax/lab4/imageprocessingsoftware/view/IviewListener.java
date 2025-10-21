@@ -9,4 +9,5 @@ public interface IviewListener {
     void onSharpenSelected();
     void onWindowLevelSelected();
     void onLoadImageSelected();
+    void onHistogramUpdate();
 }
