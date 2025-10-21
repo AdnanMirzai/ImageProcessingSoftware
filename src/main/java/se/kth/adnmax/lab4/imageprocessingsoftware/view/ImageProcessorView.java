@@ -21,7 +21,7 @@ public class ImageProcessorView extends BorderPane {
 
     private FileChooser fileChooser;
 
-    private final Alert alert = new Alert(Alert.AlertType.WARNING);
+    private final Alert alertInfo = new Alert(Alert.AlertType.INFORMATION);
 
     public ImageProcessorView() {
 
@@ -135,13 +135,13 @@ public class ImageProcessorView extends BorderPane {
         System.exit(0); // Check if user has saved file?
     }
 
-    public void showAlert(String message) {
-        alert.setWidth(200);
-        alert.setHeight(300);
-        alert.setTitle("Information");
-        alert.setHeaderText("Warning");
-        alert.setContentText(message);
-        alert.show();
+    public void showAlertInfo(String message) {
+        alertInfo.setWidth(200);
+        alertInfo.setHeight(300);
+        alertInfo.setTitle("Information");
+        alertInfo.setHeaderText("Note!");
+        alertInfo.setContentText(message);
+        alertInfo.show();
     }
 
     public void clearHistogram() {

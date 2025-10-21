@@ -33,7 +33,10 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onInvertSelected() {
         Image currentImage = view.getCurrentImage();
-        if (currentImage == null) return;
+        if (currentImage == null) {
+            view.showAlertInfo("No image file selected. Load an image to begin processing.");
+            return;
+        }
 
         //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
@@ -51,7 +54,10 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onGreyScaleSelected() {
         Image currentImage = view.getCurrentImage();
-        if (currentImage == null) return;
+        if (currentImage == null) {
+            view.showAlertInfo("No file selected. Load an image to begin processing.");
+            return;
+        }
 
         //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
@@ -69,7 +75,10 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onWindowLevelSelected() {
         Image currentImage = view.getCurrentImage();
-        if (currentImage == null) return;
+        if (currentImage == null) {
+            view.showAlertInfo("No file selected. Load an image to begin processing.");
+            return;
+        }
 
         //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
@@ -89,7 +98,10 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onBlurSelected() {
         Image currentImage = view.getCurrentImage();
-        if (currentImage == null) return;
+        if (currentImage == null) {
+            view.showAlertInfo("No file selected. Load an image to begin processing.");
+            return;
+        }
 
         //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
@@ -107,7 +119,10 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onSharpenSelected() {
         Image currentImage = view.getCurrentImage();
-        if (currentImage == null) return;
+        if (currentImage == null) {
+            view.showAlertInfo("No file selected. Load an image to begin processing.");
+            return;
+        }
 
         //convert viewdata to pixels
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
@@ -126,7 +141,6 @@ public class ImageProcessorController implements IviewListener {
     public void onLoadImageSelected() {
         File file = fileChooser.showOpenDialog(stage);
 
-        // now, load the image
         if(file != null) {
             Image image = FileIO.readImage(file);
             view.displayImage(image);
@@ -136,7 +150,7 @@ public class ImageProcessorController implements IviewListener {
             view.updateHistogram(histogramValues);
         }
         else {
-            view.showAlert("No file selected");
+            view.showAlertInfo("No file selected");
         }
     }
 
