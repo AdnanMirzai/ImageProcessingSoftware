@@ -6,4 +6,5 @@ public interface IviewListener {
     void onBlurSelected();
     void onSharpenSelected();
     void onWindowLevelSelected();
+    void onResetSelected();
 }
