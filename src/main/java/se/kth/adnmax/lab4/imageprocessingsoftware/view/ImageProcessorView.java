@@ -1,61 +1,93 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
+import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
+
+import java.io.File;
 
 public class ImageProcessorView extends BorderPane {
-    private ImageView imageView;
+    private HistogramView histogramView;
     private MenuBar menuBar;
-    private Region histogramPlaceholder;
+    //private Region histogramView;
+    private ImageView imageView;
+    private VBox analysisBox;
     private IviewListener viewListener;
+    private Slider levelSlider;
+    private Slider windowSlider;
+
+    private FileChooser fileChooser;
+    private Image image = null;
 
     public ImageProcessorView() {
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
+                "Image files", "*.png", ".jpg", "*.bmp");
+        fileChooser.getExtensionFilters().add(filter);
 
         // Meny
         createMenuBar();
         this.setTop(menuBar);
 
-        // Bildvy
+        // Bildvy (Imagebox)
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
         VBox imageBox = new VBox(imageView);
-        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setAlignment(Pos.TOP_LEFT);
         imageBox.setPadding(new Insets(5));
+        VBox.setVgrow(imageView, Priority.NEVER);
+        imageView.fitWidthProperty().bind(imageBox.widthProperty());
 
-        // Histogram (Än så länge placeholder)
-        histogramPlaceholder = new Region();
-        histogramPlaceholder.setPrefSize(300, 500);
-        histogramPlaceholder.setStyle("-fx-background: lightgray; -fx-border-color: gray;");
-
-        // Ruta för allt innehåll i mitten. Två rutor brevid varandra.
-        HBox centerBox = new HBox(10);
-        centerBox.setPadding(new Insets(10));
-        centerBox.getChildren().addAll(histogramPlaceholder, imageView);
+        // Grafvy (AnalysisBox)
+        histogramView = new HistogramView();
+        histogramView.setPrefHeight(400);
+        windowSlider = new Slider(0, 255, 0);
+        levelSlider = new Slider(0, 255, 0);
+        Label windowLabel = new Label("Window");
+        Label levelLabel = new Label("Level");
+        VBox windowPane = new VBox(5, windowSlider, windowLabel);
+        VBox levelPane  = new VBox(5, levelSlider, levelLabel);
+        windowSlider.setShowTickMarks(true);
+        windowSlider.setShowTickLabels(true);
+        levelSlider.setShowTickMarks(true);
+        levelSlider.setShowTickLabels(true);
+        HBox sliderBox = new HBox(10, windowPane, levelPane);
+        sliderBox.setPadding(new Insets(10));
+        windowSlider.setPrefWidth(200);
+        levelSlider.setPrefWidth(200);
+        VBox analysisBox = new VBox(10, histogramView, sliderBox);
+        analysisBox.setPadding(new Insets(10));
+        analysisBox.setPrefSize(370, 500);
+        analysisBox.setMinSize(370, 500);
+        analysisBox.setMaxSize(370, 500);
 
         // Lägger till i BorderPane
-        this.setCenter(centerBox);
+        this.setLeft(analysisBox);
+        this.setCenter(imageBox);
     }
 
     private void createMenuBar() {
         Menu fileMenu = new Menu("File");
+        MenuItem loadImageItem = new MenuItem("Open...");
+        MenuItem saveImageItem = new MenuItem("Save");
         MenuItem exitItem = new MenuItem(("Exit"));
         exitItem.setOnAction(e -> {
-            if(viewListener != null) viewListener.onMenubarExitSelected();
-        });
+            onMenubarExitSelected();
+                });
+        fileMenu.getItems().add(loadImageItem);
+        fileMenu.getItems().add(saveImageItem);
         fileMenu.getItems().add(exitItem);
 
         Menu processMenu = new Menu("Process");
@@ -63,12 +95,27 @@ public class ImageProcessorView extends BorderPane {
         greyScaleItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onGreyScaleSelected();
         });
+        MenuItem windowLevelItem = new MenuItem(("Window/Level"));
+        windowLevelItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onWindowLevelSelected();
+        });
         MenuItem invertItem = new MenuItem(("Invert colors"));
         invertItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onInvertSelected();
         });
+        MenuItem blurItem = new MenuItem(("Blur"));
+        blurItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onBlurSelected();
+        });
+        MenuItem sharpenItem = new MenuItem(("Sharpen"));
+        sharpenItem.setOnAction(e -> {
+            if (viewListener != null) viewListener.onSharpenSelected();
+        });
         processMenu.getItems().add(greyScaleItem);
+        processMenu.getItems().add(windowLevelItem);
         processMenu.getItems().add(invertItem);
+        processMenu.getItems().add(blurItem);
+        processMenu.getItems().add(sharpenItem);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }
@@ -85,7 +132,41 @@ public class ImageProcessorView extends BorderPane {
         return imageView.getImage();
     }
 
-    public MenuBar getMenuBar() {
-        return menuBar;
+    public double getWindow() {
+        return windowSlider.getValue();
     }
-}
+
+    public double getLevel() {
+        return levelSlider.getValue();
+    }
+
+    private void onMenubarExitSelected() {
+        System.exit(0); // Check if user has saved file?
+    }
+
+    public void updateHistogram() {
+        Image currentImage = getCurrentImage();
+        if (currentImage == null) {
+            histogramView.clear();
+            return; // inga pixlar att räkna
+        }
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+        int width = pixels.length;
+        int height = pixels[0].length;
+        int[][] histogramValues;
+        histogramValues = new int[256][3];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = pixels[x][y];
+                int r = getRed(pixel);
+                int g = getGreen(pixel);
+                int b = getBlue(pixel);
+
+                histogramValues[r][0]++;
+                histogramValues[g][1]++;
+                histogramValues[b][2]++;
+                }
+            }
+        histogramView.updateView(histogramValues);
+        }
+    }

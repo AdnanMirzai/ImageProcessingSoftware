@@ -1,11 +1,12 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 
-import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.IviewListener;
+
+import java.io.File;
 
 public class ImageProcessorController implements IviewListener {
 
@@ -51,9 +52,59 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
-    public void onMenubarExitSelected() {
-            System.exit(0); // save data?
+    public void onWindowLevelSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+        double window = view.getWindow();
+        double level = view.getLevel();
+
+        //goes throgh model
+        int[][] newPixels = model.processWindowLevel(pixels, window, level);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+        view.updateHistogram();
     }
+
+    @Override
+    public void onBlurSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+
+        //goes throgh model
+        int[][] newPixels = model.processBlur(pixels);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+    }
+
+    @Override
+    public void onSharpenSelected() {
+        Image currentImage = view.getCurrentImage();
+        if (currentImage == null) return;
+
+        //convert viewdata to pixels
+        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
+
+        //goes throgh model
+        int[][] newPixels = model.processSharpen(pixels);
+
+        //convert back, update view
+        Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
+        view.displayImage(newImage);
+    }
+
+
+
+
 
 
     public void setInitialImage(Image image) {
