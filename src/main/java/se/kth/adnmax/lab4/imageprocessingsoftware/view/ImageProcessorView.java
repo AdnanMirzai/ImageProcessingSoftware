@@ -1,5 +1,6 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.view;
 
+import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -104,11 +105,7 @@ public class ImageProcessorView extends BorderPane {
         sharpenItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onSharpenSelected();
         });
-        processMenu.getItems().add(greyScaleItem);
-        processMenu.getItems().add(windowLevelItem);
-        processMenu.getItems().add(invertItem);
-        processMenu.getItems().add(blurItem);
-        processMenu.getItems().add(sharpenItem);
+        processMenu.getItems().addAll(greyScaleItem, windowLevelItem, invertItem, blurItem, sharpenItem);
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }
