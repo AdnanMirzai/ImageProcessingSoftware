@@ -8,12 +8,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class ImageProcessorView extends BorderPane {
-    private HistogramView histogramView;
+    private final HistogramView histogramView;
     private MenuBar menuBar;
-    private ImageView imageView;
+    private final ImageView imageView;
     private IviewListener viewListener;
-    private Slider levelSlider;
-    private Slider windowSlider;
+    private final Slider levelSlider;
+    private final Slider windowSlider;
 
     private final Alert alertInfo = new Alert(Alert.AlertType.INFORMATION);
 
@@ -66,14 +66,10 @@ public class ImageProcessorView extends BorderPane {
     private void createMenuBar() {
         Menu fileMenu = new Menu("File");
         MenuItem loadImageItem = new MenuItem("Open...");
-        loadImageItem.setOnAction(e-> {
-            viewListener.onLoadImageSelected();
-        });
+        loadImageItem.setOnAction(e-> viewListener.onLoadImageSelected());
         MenuItem saveImageItem = new MenuItem("Save");
         MenuItem exitItem = new MenuItem(("Exit"));
-        exitItem.setOnAction(e -> {
-            onMenubarExitSelected();
-                });
+        exitItem.setOnAction(e -> onMenubarExitSelected());
         fileMenu.getItems().add(loadImageItem);
         fileMenu.getItems().add(saveImageItem);
         fileMenu.getItems().add(exitItem);

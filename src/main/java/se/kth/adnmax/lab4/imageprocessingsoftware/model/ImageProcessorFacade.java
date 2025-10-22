@@ -4,11 +4,10 @@ public class ImageProcessorFacade {
 
     private int[][] originalMatix;
 
-    private IPixelProcessor invertProcessor;
-    private IPixelProcessor greyScale;
-    private IPixelProcessor blur;
-    private IPixelProcessor sharpen;
-    private HistogramCalculator histogramCalc;
+    private final IPixelProcessor invertProcessor;
+    private final IPixelProcessor greyScale;
+    private final IPixelProcessor blur;
+    private final IPixelProcessor sharpen;
 
     public void saveOriginal(int [][] matix) {
         this.originalMatix = matix;
