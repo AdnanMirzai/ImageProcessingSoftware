@@ -3,7 +3,6 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import se.kth.adnmax.lab4.imageprocessingsoftware.model.FileIO;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
@@ -119,7 +118,7 @@ public class ImageProcessorController implements IviewListener {
         File file = fileChooser.showOpenDialog(stage);
 
         if(file != null) {
-            Image image = FileIO.readImage(file);
+            Image image = model.loadImage(file);
             view.displayImage(image);
             //Update histogram
             int[][] pixels = ImagePixelsConverter.imageToPixels(image);
@@ -130,18 +129,6 @@ public class ImageProcessorController implements IviewListener {
         else {
             view.showAlertInfo("No file selected");
         }
-    }
-
-    public void onHistogramUpdate() {
-        Image currentImage = view.getCurrentImage();
-        if (currentImage == null) {
-            view.clearHistogram();
-            return;
-        }
-
-        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-        int[][] histogramValues = model.calculateHistogram(pixels);
-        view.updateHistogram(histogramValues);
     }
 
     @Override

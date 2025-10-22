@@ -10,5 +10,4 @@ public interface IviewListener {
     void onWindowLevelSelected();
     void onResetSelected();
     void onLoadImageSelected();
-    void onHistogramUpdate();
 }

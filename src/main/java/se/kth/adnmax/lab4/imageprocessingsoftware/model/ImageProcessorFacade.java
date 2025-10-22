@@ -1,5 +1,10 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
+import javafx.scene.image.Image;
+import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
+
+import java.io.File;
+
 public class ImageProcessorFacade {
 
     private int[][] originalMatix;
@@ -15,6 +20,13 @@ public class ImageProcessorFacade {
 
     public int[][] getOriginal() {
         return deepCopy(originalMatix);
+    }
+
+    public Image loadImage(File file) {
+        Image image = FileIO.readImage(file);
+        int[][]pixels = ImagePixelsConverter.imageToPixels(image);
+        saveOriginal(pixels);
+        return image;
     }
 
 
