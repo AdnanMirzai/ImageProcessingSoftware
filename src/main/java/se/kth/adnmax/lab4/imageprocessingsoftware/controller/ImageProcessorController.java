@@ -57,7 +57,7 @@ public class ImageProcessorController implements IviewListener {
         }
 
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-        int[][] newPixels = model.greyScale(pixels);
+        int[][] newPixels = model.processGreyScale(pixels);
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(newPixels);

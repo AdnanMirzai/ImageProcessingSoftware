@@ -2,7 +2,7 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
 import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
 
-public class histogramCalculator {
+public class HistogramCalculator {
 
     public static int[][] calculateHistogram(int[][] pixels) {
         int width = pixels.length;

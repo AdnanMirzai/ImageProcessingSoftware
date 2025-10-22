@@ -6,10 +6,9 @@ public class ImageProcessorFacade {
 
     private IPixelProcessor invertProcessor;
     private IPixelProcessor greyScale;
-    private IPixelProcessor windowLevel;
     private IPixelProcessor blur;
     private IPixelProcessor sharpen;
-    private histogramCalculator histogramCalc;
+    private HistogramCalculator histogramCalc;
 
     public void saveOriginal(int [][] matix) {
         this.originalMatix = matix;
@@ -31,7 +30,7 @@ public class ImageProcessorFacade {
         return invertProcessor.process(pixels);
     }
 
-    public int[][] greyScale(int[][] pixels) {
+    public int[][] processGreyScale(int[][] pixels) {
         return greyScale.process(pixels);
     }
 
@@ -49,7 +48,7 @@ public class ImageProcessorFacade {
     }
 
     public int[][] calculateHistogram(int[][] pixels) {
-        return histogramCalculator.calculateHistogram(pixels);
+        return HistogramCalculator.calculateHistogram(pixels);
     }
 
     private int[][] deepCopy(int[][] original) {
