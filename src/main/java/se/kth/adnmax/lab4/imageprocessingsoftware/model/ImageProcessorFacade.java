@@ -29,6 +29,10 @@ public class ImageProcessorFacade {
         return image;
     }
 
+    public void saveImage(Image image, File file) {
+        FileIO.writeImage(image, file);
+    }
+
 
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();

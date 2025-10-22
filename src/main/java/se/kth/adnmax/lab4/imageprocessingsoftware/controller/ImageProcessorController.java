@@ -132,6 +132,18 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
+    public void onSaveImageSelected() {
+        File file = fileChooser.showSaveDialog(stage);
+        if(file != null) {
+            Image currentImage = view.getCurrentImage();
+            model.saveImage(currentImage, file);
+            view.showAlertInfo("Image was saved successfully!");
+        } else {
+            view.showAlertInfo("No file selected");
+        }
+    }
+
+    @Override
     public void onResetSelected() {
         int[][] original = model.getOriginal();
         if(original == null) return;

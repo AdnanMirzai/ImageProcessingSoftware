@@ -68,6 +68,7 @@ public class ImageProcessorView extends BorderPane {
         MenuItem loadImageItem = new MenuItem("Open...");
         loadImageItem.setOnAction(e-> viewListener.onLoadImageSelected());
         MenuItem saveImageItem = new MenuItem("Save");
+        saveImageItem.setOnAction(e -> viewListener.onSaveImageSelected());
         MenuItem exitItem = new MenuItem(("Exit"));
         exitItem.setOnAction(e -> onMenubarExitSelected());
         fileMenu.getItems().add(loadImageItem);
