@@ -17,7 +17,8 @@ public class FileIO {
         }
     }
 
-    public static void writeImage(Image image, File file) {
+    public static void writeImage(Image image, File file) throws IllegalArgumentException {
+        if(image == null) throw new IllegalArgumentException("Image must not be null!");
         try {
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
             ImageIO.write(bufferedImage, "png", file);
