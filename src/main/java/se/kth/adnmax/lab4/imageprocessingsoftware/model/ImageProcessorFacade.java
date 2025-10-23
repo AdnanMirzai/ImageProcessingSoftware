@@ -1,5 +1,16 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
+/**
+ * ImageProcessorFacade is a facade for all model functionality.
+ * <p>
+ * Stores original pixel matrix and gives functionallity to retrive.
+ * Hides details and complexity while offering all methods that controller needs
+ * for processing images. Such as greyscale and invert.
+ * Provides acess to model classes that implements {@link IPixelProcessor}
+ *
+ * @author Adnan Mirzai
+ * @author Max Ihrén
+ */
 public class ImageProcessorFacade {
 
     private int[][] originalMatix;    
@@ -9,6 +20,9 @@ public class ImageProcessorFacade {
     private final IPixelProcessor blur;
     private final IPixelProcessor sharpen;
 
+    /**
+     * Constructs a new ImageProcessorFacade and initializes the implementations of the pixel processing.
+     */
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();
         greyScale = new GreyScale();
@@ -16,10 +30,20 @@ public class ImageProcessorFacade {
         sharpen = new Sharpen();
     }
 
+    /**
+     * Saves a deep copy of the provided pixel matrix as the original image data.
+     *
+     * @param matix The 2D pixel matrix to be saved as the original.
+     */
     public void saveOriginal(int [][] matix) {
         this.originalMatix = deepCopy(matix);
     }
 
+    /**
+     * Returns a deep copy of the original pixel matrix.
+     *
+     * @return A deep copy of the original pixel matrix
+     */
     public int[][] getOriginal() {
         return deepCopy(originalMatix);
     }
@@ -50,6 +74,12 @@ public class ImageProcessorFacade {
         return HistogramCalculator.calculateHistogram(pixels);
     }
 
+    /**
+     * Creates a deep copy of a 2D int matrix.
+     *
+     * @param original The original matrix.
+     * @return A deep copy of the matrix.
+     */
     private int[][] deepCopy(int[][] original) {
         if(original==null) return null;
         int h = original.length;
