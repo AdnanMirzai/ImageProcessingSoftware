@@ -7,6 +7,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
+import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
+
 public class ImageProcessorView extends BorderPane {
     private final HistogramView histogramView;
     private MenuBar menuBar;
@@ -101,6 +106,7 @@ public class ImageProcessorView extends BorderPane {
             if (viewListener != null) viewListener.onResetSelected();
         });
         processMenu.getItems().addAll(greyScaleItem, windowLevelItem, invertItem, blurItem, sharpenItem, resetItem);
+       
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }

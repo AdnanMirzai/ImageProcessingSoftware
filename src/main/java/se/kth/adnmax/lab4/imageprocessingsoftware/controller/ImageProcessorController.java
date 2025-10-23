@@ -8,8 +8,6 @@ import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.IviewListener;
 
-import java.io.File;
-
 public class ImageProcessorController implements IviewListener {
 
     private final Stage stage;
@@ -38,7 +36,6 @@ public class ImageProcessorController implements IviewListener {
         }
 
         int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-
         int[][] newPixels = model.processInvert(pixels);
 
         Image newImage = ImagePixelsConverter.pixelsToImage(newPixels);
@@ -79,6 +76,16 @@ public class ImageProcessorController implements IviewListener {
         view.displayImage(newImage);
         int[][] histogramValues = model.calculateHistogram(newPixels);
         view.updateHistogram(histogramValues);
+    }
+
+    @Override
+    public void onResetSelected() {
+        int[][] original = model.getOriginal();
+        if(original == null) return;
+
+        Image originalImage = ImagePixelsConverter.pixelsToImage(original);
+        view.displayImage(originalImage);
+        view.updateHistogram();
     }
 
     @Override

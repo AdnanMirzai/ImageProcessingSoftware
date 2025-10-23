@@ -21,7 +21,6 @@ public class GreyScale implements IPixelProcessor {
                 greyMatrix[x][y] = greyPixel;
             }
         }
-
         return greyMatrix;
     }
 

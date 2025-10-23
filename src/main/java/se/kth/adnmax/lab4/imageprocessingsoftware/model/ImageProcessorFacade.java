@@ -7,12 +7,20 @@ import java.io.File;
 
 public class ImageProcessorFacade {
 
-    private int[][] originalMatix;
+    private int[][] originalMatix;    
 
-    private final IPixelProcessor invertProcessor;
-    private final IPixelProcessor greyScale;
-    private final IPixelProcessor blur;
-    private final IPixelProcessor sharpen;
+    private IPixelProcessor invertProcessor;
+    private IPixelProcessor greyScale;
+    private IPixelProcessor blur;
+    private IPixelProcessor sharpen;
+
+    public void saveOriginal(int [][] matix) {
+        this.originalMatix = matix;
+    }
+
+    public int[][] getOriginal() {
+        return deepCopy(originalMatix);
+    }
 
     public ImageProcessorFacade() {
         invertProcessor = new InvertColors();
