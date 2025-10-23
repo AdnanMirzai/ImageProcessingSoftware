@@ -2,7 +2,24 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
 import static se.kth.adnmax.lab4.imageprocessingsoftware.model.PixelConverter.*;
 
-public class Sharpen implements IPixelProcessor{
+/**
+ * Sharpen is an implementation of {@link IPixelProcessor} that sharpens the image
+ * @author Adnan Mirzai
+ * @author Max Ihrén
+ */
+public class Sharpen implements IPixelProcessor {
+    /**
+     * Executes the sharpening algorithm on the input pixel matrix using the unsharp mask principle.
+     * In 4 steps: <p>
+     * 1. Blurring the original image using blur method. <p>
+     * 2. Calculating the difference (mask) between the original and blurred image for each color. <p>
+     * 3. Adding the difference (mask) back to the original image to enhance edges. <p>
+     * 4. Clamping the resulting color values to the valid range [0, 255]. <p>
+     *
+     * @param originalPixels The two-dimensional integer array representing the image
+     * pixels (ARGB format).
+     * @return A new two-dimensional integer array containing the sharpened pixels.
+     */
     @Override
     public int[][] process(int[][] originalPixels) {
         int width = originalPixels.length;

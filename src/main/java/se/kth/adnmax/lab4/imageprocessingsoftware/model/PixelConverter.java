@@ -3,6 +3,8 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 /**
  * Static methods for conversions between an int representing ARGB-values
  * and the separate parts alpha, red, green and blue.
+ * @author Adnan Mirzai
+ * @author Max Ihrén
  */
 public class PixelConverter {
 
