@@ -61,7 +61,7 @@ public class WindowLevel implements IPixelProcessor {
      *
      * @param value color intensity value (0-255) to be transformed.
      * @param window The window width (W) used for contrast scaling.
-     * @param level The center level (L) used for brightness offset.
+     * @param level The bottom/start level (L) used for brightness offset.
      * @return The transformed color intensity value, clamped between 0 and 255.
      */
     private int applyWindowLevel(int value, double window, double level) {
