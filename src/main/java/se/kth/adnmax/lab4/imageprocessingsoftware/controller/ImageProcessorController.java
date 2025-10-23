@@ -5,6 +5,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 
+import se.kth.adnmax.lab4.imageprocessingsoftware.io.FileIO;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
@@ -116,12 +117,12 @@ public class ImageProcessorController implements IviewListener {
     public void onLoadImageSelected() {
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null) {
-            Image image = model.loadImage(file);
+        if(file != null) { //OBS catch exception!
+            Image image = FileIO.readImage(file);
+            int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+            model.loadImage(pixels);
             view.displayImage(image);
             //Update histogram
-            int[][] pixels = ImagePixelsConverter.imageToPixels(image);
-            model.saveOriginal(pixels);
             int[][] histogramValues = model.calculateHistogram(pixels);
             view.updateHistogram(histogramValues);
         }
@@ -135,7 +136,7 @@ public class ImageProcessorController implements IviewListener {
         File file = fileChooser.showSaveDialog(stage);
         if(file != null) {
             Image currentImage = view.getCurrentImage();
-            model.saveImage(currentImage, file);
+            FileIO.writeImage(currentImage, file);
             view.showAlertInfo("Image was saved successfully!");
         } else {
             view.showAlertInfo("No file selected");

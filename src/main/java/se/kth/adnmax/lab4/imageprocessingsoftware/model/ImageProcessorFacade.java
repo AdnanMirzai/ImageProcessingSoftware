@@ -16,6 +16,10 @@ public class ImageProcessorFacade {
         sharpen = new Sharpen();
     }
 
+    public void loadImage(int[][] pixels) {
+        saveOriginal(pixels);
+    }
+
     public void saveOriginal(int [][] matix) {
         this.originalMatix = deepCopy(matix);
     }
