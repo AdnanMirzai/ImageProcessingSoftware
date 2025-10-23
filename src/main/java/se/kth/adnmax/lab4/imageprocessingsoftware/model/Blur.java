@@ -2,14 +2,28 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
 import static se.kth.adnmax.lab4.imageprocessingsoftware.model.PixelConverter.*;
 
+/**
+ * A class that implements {@link IPixelProcessor} to convert original image to
+ * blurry image using a 3x3 weighted matrix
+ *
+ * @author Adnan Mirzai
+ * @author Max Ihrén
+ */
 public class Blur implements IPixelProcessor {
-    // Viktmatris
+
     private static final int[][] WEIGHTS = {
             {1, 2, 1},
             {2, 4, 2},
             {1, 2, 1}
     };
 
+    /**
+     * Processes an image represented by 2D matrix, applies blur, leaves opacity unchanged
+     *
+     * @param originalPixels a 2D matix, representing ARGB pixel values of original image
+     * @return a new int[][] matrix where each pixel value is a weighted average of the
+     * closest 3x3 neighboring pixles values including itself.
+     */
     @Override
     public int[][] process(int[][] originalPixels) {
         int width = originalPixels.length;
@@ -26,14 +40,14 @@ public class Blur implements IPixelProcessor {
 
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1 ; dy++) {
-                        int nx = x + dx;
-                        int ny = y + dy;
+                        int neighborX = x + dx;
+                        int neighborY = y + dy;
 
-                        // Om den sökta pixeln ligger utanför bildens dimensioner hoppa över den. Alltså utanför (0,0) till (width, height)
-                        if(nx < 0 || nx >= width || ny < 0 || ny >= height)
+                        //Skip the edges to avoid array out of bounds exception
+                        if(neighborX < 0 || neighborX >= width || neighborY < 0 || neighborY >= height)
                             continue;
 
-                        int pixel = originalPixels[nx][ny];
+                        int pixel = originalPixels[neighborX][neighborY];
                         int weight = WEIGHTS[dx + 1][dy + 1];
 
                         sumRed += getRed(pixel) * weight;
@@ -43,7 +57,7 @@ public class Blur implements IPixelProcessor {
                     }
                 }
 
-                int alpha = getAlpha(originalPixels[x][y]); // leave alpha (opacity) unchanged
+                int alpha = getAlpha(originalPixels[x][y]); //leave opacity unchanged
                 int avgRed = Math.round(sumRed/totalWeight);
                 int avgGreen = Math.round(sumGreen/totalWeight);
                 int avgBlue = Math.round(sumBlue/totalWeight);
