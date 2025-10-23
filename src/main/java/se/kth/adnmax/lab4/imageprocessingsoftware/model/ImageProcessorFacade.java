@@ -15,7 +15,7 @@ public class ImageProcessorFacade {
     private IPixelProcessor sharpen;
 
     public void saveOriginal(int [][] matix) {
-        this.originalMatix = matix;
+        this.originalMatix = deepCopy(matix);
     }
 
     public int[][] getOriginal() {
@@ -27,14 +27,6 @@ public class ImageProcessorFacade {
         greyScale = new GreyScale();
         blur = new Blur();
         sharpen = new Sharpen();
-    }
-
-    public void saveOriginal(int [][] matix) {
-        this.originalMatix = matix;
-    }
-
-    public int[][] getOriginal() {
-        return deepCopy(originalMatix);
     }
 
     public Image loadImage(File file) {

@@ -3,6 +3,8 @@ package se.kth.adnmax.lab4.imageprocessingsoftware.controller;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.io.File;
+
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import se.kth.adnmax.lab4.imageprocessingsoftware.view.ImageProcessorView;
@@ -79,16 +81,6 @@ public class ImageProcessorController implements IviewListener {
     }
 
     @Override
-    public void onResetSelected() {
-        int[][] original = model.getOriginal();
-        if(original == null) return;
-
-        Image originalImage = ImagePixelsConverter.pixelsToImage(original);
-        view.displayImage(originalImage);
-        view.updateHistogram();
-    }
-
-    @Override
     public void onBlurSelected() {
         Image currentImage = view.getCurrentImage();
         if (currentImage == null) {
@@ -161,10 +153,4 @@ public class ImageProcessorController implements IviewListener {
         view.updateHistogram(histogramValues);
     }
 
-
-    public void setInitialImage(Image image) {
-        int[][] pixels = ImagePixelsConverter.imageToPixels(image);
-        model.saveOriginal(pixels);
-        view.displayImage(image);
-    }
 }

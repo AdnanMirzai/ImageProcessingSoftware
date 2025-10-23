@@ -29,7 +29,7 @@ public class Blur implements IPixelProcessor {
                         int nx = x + dx;
                         int ny = y + dy;
 
-                        // Om den sökta pixeln ligger utanför bildens dimensioner hoppa över den. Alltså utanför (0,0) till (width,height)
+                        // Om den sökta pixeln ligger utanför bildens dimensioner hoppa över den. Alltså utanför (0,0) till (width, height)
                         if(nx < 0 || nx >= width || ny < 0 || ny >= height)
                             continue;
 

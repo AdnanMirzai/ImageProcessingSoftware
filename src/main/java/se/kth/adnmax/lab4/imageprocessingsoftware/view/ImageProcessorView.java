@@ -6,11 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-
 import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
-import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
-import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
 
 public class ImageProcessorView extends BorderPane {
     private final HistogramView histogramView;
