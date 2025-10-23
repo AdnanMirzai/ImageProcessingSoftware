@@ -1,4 +1,4 @@
-package se.kth.adnmax.lab4.imageprocessingsoftware.io;
+package se.kth.adnmax.lab4.imageprocessingsoftware.util;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
