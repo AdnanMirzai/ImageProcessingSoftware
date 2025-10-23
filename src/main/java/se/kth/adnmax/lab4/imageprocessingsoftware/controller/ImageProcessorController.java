@@ -120,7 +120,7 @@ public class ImageProcessorController implements IviewListener {
         if(file != null) { //OBS catch exception!
             Image image = FileIO.readImage(file);
             int[][] pixels = ImagePixelsConverter.imageToPixels(image);
-            model.loadImage(pixels);
+            model.saveOriginal(pixels);
             view.displayImage(image);
             //Update histogram
             int[][] histogramValues = model.calculateHistogram(pixels);
