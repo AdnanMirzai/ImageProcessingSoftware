@@ -1,6 +1,6 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
-import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
+import static se.kth.adnmax.lab4.imageprocessingsoftware.model.PixelConverter.*;
 
 public class GreyScale implements IPixelProcessor {
 
