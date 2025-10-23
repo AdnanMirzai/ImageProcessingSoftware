@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
-import java.io.IOException;
 
 import se.kth.adnmax.lab4.imageprocessingsoftware.util.FileIO;
 import se.kth.adnmax.lab4.imageprocessingsoftware.model.ImageProcessorFacade;
@@ -27,7 +26,7 @@ public class ImageProcessorController implements IviewListener {
 
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Image files", "*.png", ".jpg", "*.bmp");
+                "Image files", "*.png", "*.jpg", "*.bmp");
         fileChooser.getExtensionFilters().add(filter);
     }
 
@@ -118,14 +117,19 @@ public class ImageProcessorController implements IviewListener {
     public void onLoadImageSelected() {
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null) { //OBS catch exception!
-            Image image = FileIO.readImage(file);
-            int[][] pixels = ImagePixelsConverter.imageToPixels(image);
-            model.saveOriginal(pixels);
-            view.displayImage(image);
-            //Update histogram
-            int[][] histogramValues = model.calculateHistogram(pixels);
-            view.updateHistogram(histogramValues);
+        if(file != null) {
+            try{
+                Image image = FileIO.readImage(file);
+                int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+                model.saveOriginal(pixels);
+                view.displayImage(image);
+                //Update histogram
+                int[][] histogramValues = model.calculateHistogram(pixels);
+                view.updateHistogram(histogramValues);
+            }
+            catch (RuntimeException e) {
+                view.showAlertInfo("failed to load image: " + e.getMessage());
+            }
         }
         else {
             view.showAlertInfo("No file selected");

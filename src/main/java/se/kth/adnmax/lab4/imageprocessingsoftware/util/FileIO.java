@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class FileIO {
 
-    public static Image readImage(File file) {
+    public static Image readImage(File file) throws RuntimeException {
         try {
             return new Image(file.toURI().toString());
         } catch (Exception e) {
