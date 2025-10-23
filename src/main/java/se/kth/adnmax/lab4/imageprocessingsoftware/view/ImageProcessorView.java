@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
@@ -12,23 +13,16 @@ import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
 import static se.kth.adnmax.lab4.imageprocessingsoftware.util.PixelConverter.*;
 
 public class ImageProcessorView extends BorderPane {
-    private HistogramView histogramView;
+    private final HistogramView histogramView;
     private MenuBar menuBar;
-    //private Region histogramView;
-    private ImageView imageView;
-    private VBox analysisBox;
+    private final ImageView imageView;
     private IviewListener viewListener;
-    private Slider levelSlider;
-    private Slider windowSlider;
+    private final Slider levelSlider;
+    private final Slider windowSlider;
 
-    private FileChooser fileChooser;
-    private Image image = null;
+    private final Alert alertInfo = new Alert(Alert.AlertType.INFORMATION);
 
     public ImageProcessorView() {
-        fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Image files", "*.png", ".jpg", "*.bmp");
-        fileChooser.getExtensionFilters().add(filter);
 
         // Meny
         createMenuBar();
@@ -37,6 +31,7 @@ public class ImageProcessorView extends BorderPane {
         // Bildvy (Imagebox)
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
         VBox imageBox = new VBox(imageView);
@@ -76,11 +71,11 @@ public class ImageProcessorView extends BorderPane {
     private void createMenuBar() {
         Menu fileMenu = new Menu("File");
         MenuItem loadImageItem = new MenuItem("Open...");
+        loadImageItem.setOnAction(e-> viewListener.onLoadImageSelected());
         MenuItem saveImageItem = new MenuItem("Save");
+        saveImageItem.setOnAction(e -> viewListener.onSaveImageSelected());
         MenuItem exitItem = new MenuItem(("Exit"));
-        exitItem.setOnAction(e -> {
-            onMenubarExitSelected();
-                });
+        exitItem.setOnAction(e -> onMenubarExitSelected());
         fileMenu.getItems().add(loadImageItem);
         fileMenu.getItems().add(saveImageItem);
         fileMenu.getItems().add(exitItem);
@@ -110,18 +105,15 @@ public class ImageProcessorView extends BorderPane {
         resetItem.setOnAction(e -> {
             if (viewListener != null) viewListener.onResetSelected();
         });
-        processMenu.getItems().add(greyScaleItem);
-        processMenu.getItems().add(windowLevelItem);
-        processMenu.getItems().add(invertItem);
-        processMenu.getItems().add(blurItem);
-        processMenu.getItems().add(sharpenItem);
-        processMenu.getItems().add(resetItem);
+        processMenu.getItems().addAll(greyScaleItem, windowLevelItem, invertItem, blurItem, sharpenItem, resetItem);
+       
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, processMenu);
     }
 
     public void displayImage(Image image) {
         imageView.setImage(image);
+
     }
 
     public void setViewListener(IviewListener viewListener) {
@@ -144,29 +136,20 @@ public class ImageProcessorView extends BorderPane {
         System.exit(0); // Check if user has saved file?
     }
 
-    public void updateHistogram() {
-        Image currentImage = getCurrentImage();
-        if (currentImage == null) {
-            histogramView.clear();
-            return; // inga pixlar att räkna
-        }
-        int[][] pixels = ImagePixelsConverter.imageToPixels(currentImage);
-        int width = pixels.length;
-        int height = pixels[0].length;
-        int[][] histogramValues;
-        histogramValues = new int[256][3];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixels[x][y];
-                int r = getRed(pixel);
-                int g = getGreen(pixel);
-                int b = getBlue(pixel);
-
-                histogramValues[r][0]++;
-                histogramValues[g][1]++;
-                histogramValues[b][2]++;
-                }
-            }
-        histogramView.updateView(histogramValues);
-        }
+    public void showAlertInfo(String message) {
+        alertInfo.setWidth(200);
+        alertInfo.setHeight(300);
+        alertInfo.setTitle("Information");
+        alertInfo.setHeaderText("Note!");
+        alertInfo.setContentText(message);
+        alertInfo.show();
     }
+
+    public void clearHistogram() {
+        histogramView.clear();
+    }
+
+    public void updateHistogram(int[][] histogramValues) {
+        histogramView.updateView(histogramValues);
+    }
+}

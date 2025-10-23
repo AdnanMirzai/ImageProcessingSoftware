@@ -1,11 +1,16 @@
 package se.kth.adnmax.lab4.imageprocessingsoftware.model;
 
+import javafx.scene.image.Image;
+import se.kth.adnmax.lab4.imageprocessingsoftware.util.ImagePixelsConverter;
+
+import java.io.File;
+
 public class ImageProcessorFacade {
-    private int[][] originalMatix;
+
+    private int[][] originalMatix;    
 
     private IPixelProcessor invertProcessor;
     private IPixelProcessor greyScale;
-    private IPixelProcessor windowLevel;
     private IPixelProcessor blur;
     private IPixelProcessor sharpen;
 
@@ -24,11 +29,30 @@ public class ImageProcessorFacade {
         sharpen = new Sharpen();
     }
 
+    public void saveOriginal(int [][] matix) {
+        this.originalMatix = matix;
+    }
+
+    public int[][] getOriginal() {
+        return deepCopy(originalMatix);
+    }
+
+    public Image loadImage(File file) {
+        Image image = FileIO.readImage(file);
+        int[][]pixels = ImagePixelsConverter.imageToPixels(image);
+        saveOriginal(pixels);
+        return image;
+    }
+
+    public void saveImage(Image image, File file) {
+        FileIO.writeImage(image, file);
+    }
+
     public int[][] processInvert(int[][] pixels) {
         return invertProcessor.process(pixels);
     }
 
-    public int[][] greyScale(int[][] pixels) {
+    public int[][] processGreyScale(int[][] pixels) {
         return greyScale.process(pixels);
     }
 
@@ -43,6 +67,10 @@ public class ImageProcessorFacade {
 
     public int[][] processSharpen(int[][]pixels) {
         return sharpen.process(pixels);
+    }
+
+    public int[][] calculateHistogram(int[][] pixels) {
+        return HistogramCalculator.calculateHistogram(pixels);
     }
 
     private int[][] deepCopy(int[][] original) {
