@@ -14,6 +14,13 @@ public class ImageProcessorFacade {
     private final IPixelProcessor blur;
     private final IPixelProcessor sharpen;
 
+    public ImageProcessorFacade() {
+        invertProcessor = new InvertColors();
+        greyScale = new GreyScale();
+        blur = new Blur();
+        sharpen = new Sharpen();
+    }
+
     public void saveOriginal(int [][] matix) {
         this.originalMatix = matix;
     }
@@ -31,14 +38,6 @@ public class ImageProcessorFacade {
 
     public void saveImage(Image image, File file) {
         FileIO.writeImage(image, file);
-    }
-
-
-    public ImageProcessorFacade() {
-        invertProcessor = new InvertColors();
-        greyScale = new GreyScale();
-        blur = new Blur();
-        sharpen = new Sharpen();
     }
 
     public int[][] processInvert(int[][] pixels) {
