@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class FileIO {
 
-    public static Image readImage(File file) {
+    public static Image readImage(File file) throws RuntimeException {
         try {
             return new Image(file.toURI().toString());
         } catch (Exception e) {
@@ -17,7 +17,8 @@ public class FileIO {
         }
     }
 
-    public static void writeImage(Image image, File file) {
+    public static void writeImage(Image image, File file) throws IllegalArgumentException {
+        if(image == null) throw new IllegalArgumentException("Image must not be null!");
         try {
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
             ImageIO.write(bufferedImage, "png", file);

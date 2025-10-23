@@ -26,7 +26,7 @@ public class ImageProcessorController implements IviewListener {
 
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
-                "Image files", "*.png", ".jpg", "*.bmp");
+                "Image files", "*.png", "*.jpg", "*.bmp");
         fileChooser.getExtensionFilters().add(filter);
     }
 
@@ -117,14 +117,19 @@ public class ImageProcessorController implements IviewListener {
     public void onLoadImageSelected() {
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null) { //OBS catch exception!
-            Image image = FileIO.readImage(file);
-            int[][] pixels = ImagePixelsConverter.imageToPixels(image);
-            model.saveOriginal(pixels);
-            view.displayImage(image);
-            //Update histogram
-            int[][] histogramValues = model.calculateHistogram(pixels);
-            view.updateHistogram(histogramValues);
+        if(file != null) {
+            try{
+                Image image = FileIO.readImage(file);
+                int[][] pixels = ImagePixelsConverter.imageToPixels(image);
+                model.saveOriginal(pixels);
+                view.displayImage(image);
+                //Update histogram
+                int[][] histogramValues = model.calculateHistogram(pixels);
+                view.updateHistogram(histogramValues);
+            }
+            catch (RuntimeException e) {
+                view.showAlertInfo("failed to load image: " + e.getMessage());
+            }
         }
         else {
             view.showAlertInfo("No file selected");
@@ -134,24 +139,31 @@ public class ImageProcessorController implements IviewListener {
     @Override
     public void onSaveImageSelected() {
         File file = fileChooser.showSaveDialog(stage);
-        if(file != null) {
+        if (file != null) {
             Image currentImage = view.getCurrentImage();
-            FileIO.writeImage(currentImage, file);
-            view.showAlertInfo("Image was saved successfully!");
+            try {
+                FileIO.writeImage(currentImage, file);
+                view.showAlertInfo("Image was saved successfully!");
+            } catch (IllegalArgumentException e) {
+                view.showAlertInfo("Cannot save image: " + e.getMessage());
+            }
         } else {
             view.showAlertInfo("No file selected");
         }
     }
 
     @Override
-    public void onResetSelected() {
+    public void onResetSelected () {
         int[][] original = model.getOriginal();
-        if(original == null) return;
+        if (original == null) {
+            view.showAlertInfo("No file selected. Load an image to begin processing.");
+            return;
+        }
 
         Image originalImage = ImagePixelsConverter.pixelsToImage(original);
         view.displayImage(originalImage);
         int[][] histogramValues = model.calculateHistogram(original);
         view.updateHistogram(histogramValues);
-    }
+        }
 
 }
