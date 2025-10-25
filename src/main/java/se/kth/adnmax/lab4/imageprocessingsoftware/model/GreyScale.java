@@ -27,9 +27,9 @@ public class GreyScale implements IPixelProcessor {
                 int pixel = originalPixels[x][y];
                 int alpha = getAlpha(pixel);
 
-                int  avg = (getRed(pixel) + getBlue(pixel) + getGreen(pixel))/3;
+                float  avg = (float) (getRed(pixel) + getBlue(pixel) + getGreen(pixel)) /3;
 
-                int greyPixel = toArgbPixel(alpha, avg, avg, avg);
+                int greyPixel = toArgbPixel(alpha, (int) avg, (int) avg, (int) avg);
                 greyMatrix[x][y] = greyPixel;
             }
         }
